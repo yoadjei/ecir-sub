@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+# downloaded or rebuilt by the scripts
+runs/
+cache/
+qrels/
