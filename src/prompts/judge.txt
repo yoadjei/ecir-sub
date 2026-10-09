@@ -1,0 +1,10 @@
+You are judging search results. Read the query and the passage. Answer with a single character:
+1 if the passage answers the query or contains information that directly helps answer it,
+0 otherwise.
+Do not explain. Output only 0 or 1.
+
+Query: {query}
+
+Passage: {passage}
+
+Answer:
