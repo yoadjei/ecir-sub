@@ -1,0 +1,60 @@
+seed: 13
+paths:
+  runs: runs
+  qrels: qrels
+  results: results
+  figures: figures
+  cache: cache
+
+# order is the order of tables and figures, smallest corpus first
+languages:
+  yo: {name: Yoruba,     tier: low,  dense: true,  bm25: true}
+  sw: {name: Swahili,    tier: low,  dense: true,  bm25: true}
+  bn: {name: Bengali,    tier: mid,  dense: true,  bm25: true}
+  te: {name: Telugu,     tier: mid,  dense: true,  bm25: true}
+  th: {name: Thai,       tier: mid,  dense: true,  bm25: true}
+  fi: {name: Finnish,    tier: high, dense: true,  bm25: true}
+  es: {name: Spanish,    tier: high, dense: false, bm25: true}
+  fr: {name: French,     tier: high, dense: false, bm25: true}
+  en: {name: English,    tier: high, dense: false, bm25: true}
+
+# languages that get a multilingual-e5-small run encoded here
+e5_languages: [sw, yo]
+
+systems:
+  bm25:
+    label: BM25
+    contributor: true
+    kind: lucene
+    index_suffix: ""
+  mdpr:
+    label: mDPR (pFT-MSMARCO)
+    contributor: true
+    kind: faiss
+    encoder: castorini/mdpr-tied-pft-msmarco
+    encoder_class: auto
+    index_suffix: -mdpr-tied-pft-msmarco
+  mcontriever:
+    label: mContriever (pFT-MSMARCO)
+    contributor: false
+    kind: faiss
+    encoder: facebook/mcontriever-msmarco
+    encoder_class: contriever
+    index_suffix: -mcontriever-pft-msmarco
+  e5small:
+    label: multilingual-e5-small
+    contributor: false
+    kind: self
+    encoder: intfloat/multilingual-e5-small
+
+hits: 100
+k: 10
+bootstrap_resamples: 10000
+permutations: 10000
+
+# language pairs (higher tier, lower tier) tested next to the tier gap
+gap_pairs:
+  - [fi, sw]
+  - [th, yo]
+  - [bn, yo]
+  - [te, sw]
