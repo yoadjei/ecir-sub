@@ -1,0 +1,5 @@
+lang,model,n,kappa,unparseable_rate,sec_per_judgement,precision,recall,accuracy,npv,tp,fn,tn,fp,passes_gate
+sw,qwen2.5:7b-instruct,100,0.56,0.0,8.82,0.7917,0.76,0.78,0.7692,38,12,40,10,True
+yo,qwen2.5:7b-instruct,100,0.36,0.0,6.99,0.7647,0.52,0.68,0.6364,26,24,42,8,True
+th,qwen2.5:7b-instruct,100,0.42,0.0,11.66,0.6842,0.78,0.71,0.7442,39,11,32,18,True
+fi,qwen2.5:7b-instruct,100,0.42,0.0,7.83,0.7143,0.7,0.71,0.7059,35,15,36,14,True
