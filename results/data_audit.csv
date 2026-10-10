@@ -1,0 +1,10 @@
+lang,tier,n_topics,n_queries,n_judgements,judgements_per_query_mean,judgements_per_query_median,positives_per_query_mean,queries_zero_positives,corpus_passages
+yo,low,119,119,1188,9.983,10.0,1.21,0,49043
+sw,low,482,482,5092,10.564,11.0,1.888,0,131924
+bn,mid,411,411,4206,10.234,10.0,2.1,0,297265
+te,mid,828,828,1606,1.94,1.0,1.031,0,518079
+th,mid,733,733,7573,10.332,10.0,1.832,0,542166
+fi,high,1271,1271,12008,9.448,10.0,1.925,0,1883509
+es,high,648,648,6443,9.943,10.0,4.61,0,-1
+fr,high,343,343,3429,9.997,10.0,2.131,0,-1
+en,high,799,799,8350,10.451,10.0,2.911,0,-1
