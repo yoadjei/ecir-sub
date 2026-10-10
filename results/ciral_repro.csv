@@ -1,0 +1,11 @@
+lang,system,n_queries,ndcg20,reference,diff,within_tolerance
+ha,bm25qt,312,0.2121,0.2121,0.0,True
+ha,bm25dt,312,0.2124,0.2124,0.0,True
+so,bm25qt,239,0.1725,0.1725,-0.0,True
+so,bm25dt,239,0.2186,0.2186,0.0,True
+sw,bm25qt,114,0.1727,0.1727,0.0,True
+sw,bm25dt,114,0.2582,0.2582,0.0,True
+yo,bm25qt,554,0.3459,0.3459,0.0,True
+yo,bm25dt,554,0.37,0.37,-0.0,True
+yo,mdpr,554,0.1458,0.1458,-0.0,True
+yo,afriberta,554,0.1157,0.1157,-0.0,True
