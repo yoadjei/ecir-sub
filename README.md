@@ -16,9 +16,11 @@ bash setup/env_wsl.sh
 conda activate holes
 ```
 
+tested on ubuntu 24.04 under wsl2 with 8 cpu cores and 12 GB of ram, python 3.12.15, jdk 21.0.10 and ollama 0.40.0. package versions are pinned in the setup script.
+
 ## run order
 
-every script is run from the repo root as `PYTHONPATH=. python src/<script>`. most take `--langs` and `--systems`, see `--help`.
+`bash run_all.sh` runs every step below in order and can be started again after a cut-off. to run one step, call it from the repo root as `PYTHONPATH=. python src/<script>`. most take `--langs` and `--systems`, see `--help`.
 
 ```bash
 python src/00_env_check.py
