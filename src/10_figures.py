@@ -1,7 +1,7 @@
 """figures from results/*.csv, greyscale safe (shapes and fill carry the meaning, not colour).
 
 fig1_main   judged@10 with ci (filled marker for pool contributors) next to ndcg@10 from lower to
-            optimistic, condensed tick, llm-corrected cross
+            optimistic, condensed tick
 fig2_ciral  ndcg@10 under shallow and deep qrels per language and system (only if ciral.csv exists)
 
 languages run from the smallest corpus (top) to the largest. every function takes an output stem
@@ -19,7 +19,7 @@ from matplotlib.lines import Line2D
 from src.utils.config import ROOT, cfg
 
 WIDTH_IN = 4.72
-ROW_IN = 0.44
+ROW_IN = 0.38
 CIRAL_ROW_IN = 0.17
 MARKERS = ["o", "s", "^", "D", "v", "P"]
 SHORT = {"bm25": "BM25", "mdpr": "mDPR", "mcontriever": "mContriever", "e5small": "mE5-small"}
@@ -86,10 +86,9 @@ def lang_labels(df: pd.DataFrame, order: list[str]) -> list[str]:
     return [f"{l} ({tier[l]})" for l in order]
 
 
-def draw_bounds(ax, bnd: pd.DataFrame, order: list[str], systems: list[str], filled) -> None:
+def draw_bounds(ax, bnd: pd.DataFrame, order: list[str], systems: list[str]) -> None:
     offsets = row_offsets(len(systems))
     cells = bnd.set_index(["lang", "system"])
-    corrected = filled.set_index(["lang", "system"]).corrected_mean if filled is not None else {}
     for row, lang in enumerate(order):
         for i, s in enumerate(systems):
             if (lang, s) not in cells.index:
@@ -99,8 +98,6 @@ def draw_bounds(ax, bnd: pd.DataFrame, order: list[str], systems: list[str], fil
             ax.plot(c.condensed_mean, y, marker="|", color="0.35", ms=6, mew=1.0, ls="", zorder=3)
             ax.plot(c.lower_mean, y, marker=m, mfc="black", mec="black", ms=4, ls="", zorder=4)
             ax.plot(c.optimistic_mean, y, marker=m, mfc="white", mec="black", ms=4, mew=0.8, ls="", zorder=4)
-            if (lang, s) in corrected:
-                ax.plot(corrected[(lang, s)], y, marker="x", color="black", ms=4.5, mew=1.0, ls="", zorder=5)
     ax.set_xlabel("nDCG@10")
 
 
@@ -118,16 +115,14 @@ def draw_coverage(ax, cov: pd.DataFrame, order: list[str], systems: list[str]) -
     ax.set_xlabel("Judged@10")
 
 
-def bound_glyphs(filled) -> list[Line2D]:
+def bound_glyphs() -> list[Line2D]:
     glyphs = [Line2D([], [], marker="o", mfc="black", mec="black", color="black", ls="", ms=4, label="lower"),
               Line2D([], [], marker="o", mfc="white", mec="black", color="black", ls="", ms=4, label="optimistic"),
               Line2D([], [], marker="|", color="0.35", ls="", ms=6, mew=1.0, label="condensed")]
-    if filled is not None:
-        glyphs.append(Line2D([], [], marker="x", color="black", ls="", ms=4.5, mew=1.0, label="LLM-corrected"))
     return glyphs
 
 
-def main_fig(cov: pd.DataFrame, bnd: pd.DataFrame, audit: pd.DataFrame, filled: pd.DataFrame | None, stem) -> plt.Figure:
+def main_fig(cov: pd.DataFrame, bnd: pd.DataFrame, audit: pd.DataFrame, stem) -> plt.Figure:
     """judged@10 and the nDCG@10 bounds side by side, one row per language."""
     order = order_languages(list(dict.fromkeys(bnd.lang)), audit)
     systems = systems_in(bnd)
@@ -139,8 +134,8 @@ def main_fig(cov: pd.DataFrame, bnd: pd.DataFrame, audit: pd.DataFrame, filled: 
         style_axes(axc, len(order), (0, 0.5), [0, 0.1, 0.2, 0.3, 0.4, 0.5])
         style_axes(axb, len(order), (0, 1.03), [0, 0.2, 0.4, 0.6, 0.8, 1.0])
         draw_coverage(axc, cov, order, systems)
-        draw_bounds(axb, bnd, order, systems, filled)
-        add_legends(fig, systems, bound_glyphs(filled))
+        draw_bounds(axb, bnd, order, systems)
+        add_legends(fig, systems, bound_glyphs())
     save(fig, stem)
     return fig
 
@@ -191,7 +186,7 @@ def main() -> None:
     out = ROOT / "figures"
     audit = pd.read_csv(ROOT / "results" / "data_audit.csv")
     main_fig(pd.read_csv(ROOT / "results" / "coverage.csv"), pd.read_csv(ROOT / "results" / "bounds.csv"), audit,
-             read_optional("filled.csv"), out / "fig1_main")
+             out / "fig1_main")
     ciral = read_optional("ciral.csv")
     if ciral is not None:
         ciral_fig(ciral, out / "fig2_ciral")
