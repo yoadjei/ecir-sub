@@ -52,6 +52,10 @@ python src/10_figures.py
 | 09 | results/table*.csv, mde.csv, summary_stats.txt, numbers.md, tables/*.tex |
 | 10 | figures/ |
 
+## checking the results without the full run
+
+`results/` holds the outputs the paper reports. with it in place, `python src/09_stats.py` rebuilds the tables, the headline numbers and `results/summary_stats.txt`, and `python src/10_figures.py` rebuilds the figures, both in a few minutes and without retrieval or model calls. steps 06 and 07 also reuse `results/llm_labels.jsonl`.
+
 ## resuming
 
 dense search (02), the e5 runs (03) and the judge (06, 07) can be stopped at any time. dense search keeps a `.partial` file and carries on after the last complete query, the e5 embeddings are saved in chunks, and every judged passage is cached in `results/llm_labels.jsonl`. dense search needs no network once the index and the model are in the local cache.
