@@ -16,10 +16,12 @@ fi
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main >/dev/null 2>&1 || true
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r >/dev/null 2>&1 || true
 conda activate holes
-conda install -c conda-forge openjdk=21 maven -y
+conda install -c conda-forge openjdk=21.0.10 maven -y
 pip install --upgrade pip
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install faiss-cpu pyserini==2.4.0 ir_measures datasets pandas numpy scipy matplotlib pyyaml tqdm pytest sentence-transformers huggingface_hub requests
+pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+pip install faiss-cpu==1.15.1 pyserini==2.4.0 ir_measures==0.4.3 datasets==5.1.0 pandas==3.0.6 numpy==2.5.3 \
+  scipy==1.18.1 matplotlib==3.11.2 pyyaml==6.0.3 tqdm==4.70.1 pytest==9.1.1 sentence-transformers==6.1.0 \
+  transformers==5.19.0 huggingface_hub==1.33.0 requests==2.34.2
 
 mkdir -p "$HOME/.cache/pyserini/indexes" "$HOME/.cache/huggingface"
 grep -q PYSERINI_CACHE "$HOME/.bashrc" || echo 'export PYSERINI_CACHE=$HOME/.cache/pyserini' >> "$HOME/.bashrc"
