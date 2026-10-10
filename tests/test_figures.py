@@ -42,7 +42,7 @@ def test_language_order_drops_languages_without_rows():
 
 
 def test_main_figure_has_one_row_per_language(tmp_path):
-    fig = figs.main_fig(_coverage(), _bounds(), AUDIT, None, tmp_path / "fig1")
+    fig = figs.main_fig(_coverage(), _bounds(), AUDIT, tmp_path / "fig1")
     ax = fig.axes[0]
     assert len(ax.get_yticks()) == 3
     assert [t.get_text().split(" ")[0] for t in ax.get_yticklabels()] == ["yo", "te", "fi"]
@@ -50,32 +50,23 @@ def test_main_figure_has_one_row_per_language(tmp_path):
 
 
 def test_main_figure_writes_pdf_and_png_only_where_asked(tmp_path, monkeypatch):
-    figs.main_fig(_coverage(), _bounds(), AUDIT, None, tmp_path / "fig1")
+    figs.main_fig(_coverage(), _bounds(), AUDIT, tmp_path / "fig1")
     assert sorted(p.name for p in tmp_path.iterdir()) == ["fig1.pdf", "fig1.png"]
     monkeypatch.chdir(tmp_path / "..")
     before = sorted(p.name for p in (tmp_path / "..").iterdir())
-    figs.main_fig(_coverage(), _bounds(), AUDIT, None, None)
+    figs.main_fig(_coverage(), _bounds(), AUDIT, None)
     assert sorted(p.name for p in (tmp_path / "..").iterdir()) == before
-
-
-def test_main_figure_draws_corrected_marker_only_when_given():
-    plain = figs.main_fig(_coverage(), _bounds(), AUDIT, None, None)
-    filled = pd.DataFrame({"lang": ["yo"], "system": ["bm25"], "corrected_mean": [0.5]})
-    with_x = figs.main_fig(_coverage(), _bounds(), AUDIT, filled, None)
-    marks = lambda fig: [ln for ln in fig.axes[1].lines if ln.get_marker() == "x"]
-    assert len(marks(plain)) == 0
-    assert len(marks(with_x)) == 1
 
 
 def test_main_figure_skips_missing_system_cells():
     b = _bounds(langs=("fi", "yo"))
     b = b[~((b.lang == "fi") & (b.system == "mcontriever"))]
-    fig = figs.main_fig(_coverage(langs=("fi", "yo")), b, AUDIT, None, None)
+    fig = figs.main_fig(_coverage(langs=("fi", "yo")), b, AUDIT, None)
     assert len(fig.axes[0].get_yticks()) == 2
 
 
 def test_main_figure_fills_contributors_only_in_the_coverage_panel():
-    fig = figs.main_fig(_coverage(langs=("yo",)), _bounds(langs=("yo",)), AUDIT, None, None)
+    fig = figs.main_fig(_coverage(langs=("yo",)), _bounds(langs=("yo",)), AUDIT, None)
     fills = {ln.get_markerfacecolor() for ln in fig.axes[0].lines if ln.get_marker() == "o"}
     assert fills == {"black"}
     hollow = [ln for ln in fig.axes[0].lines if ln.get_marker() == "^"]
