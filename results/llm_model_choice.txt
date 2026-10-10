@@ -1,0 +1,6 @@
+chosen_model: qwen2.5:7b-instruct
+mean_calibration_kappa:
+model
+qwen2.5:7b-instruct    0.57
+gemma3:4b              0.43
+prompt_hash: d3a9301907
